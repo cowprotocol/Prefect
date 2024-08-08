@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    service: prefect-server
+  name: prefect-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      service: prefect-server
+  template:
+    metadata:
+      labels:
+        service: prefect-server
+    spec:
+      containers:
+        - args:
+            - prefect
+            - server
+            - start
+          env:
+            - name: PREFECT_SERVER_API_HOST
+              value: 0.0.0.0
+            - name: PREFECT_SERVER__TELEMETRY__ENABLED
+              value: "false"
+          image: prefecthq/prefect:2-python3.10
+          name: prefect-server
+      restartPolicy: Always

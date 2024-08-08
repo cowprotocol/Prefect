@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    service: nginx
+  name: nginx
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      service: nginx
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        service: nginx
+    spec:
+      containers:
+        - image: nginx:alpine
+          name: nginx
+          ports:
+            - containerPort: 80
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /etc/nginx/nginx.conf
+              name: nginx-cm0
+              subPath: nginx.conf
+            - mountPath: /etc/nginx/.htpasswd
+              name: nginx-claim1
+              readOnly: true
+      restartPolicy: Always
+      volumes:
+        - configMap:
+            items:
+              - key: nginx.conf
+                path: nginx.conf
+            name: nginx-cm0
+          name: nginx-cm0
+        - name: nginx-claim1
+          persistentVolumeClaim:
+            claimName: nginx-claim1
+            readOnly: true

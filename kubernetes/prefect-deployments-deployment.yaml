@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    service: prefect-deployments
+  name: prefect-deployments
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      service: prefect-deployments
+  template:
+    metadata:
+      labels:
+        service: prefect-deployments
+    spec:
+      containers:
+        - env:
+            - name: PREFECT_API_URL
+              value: http://prefect-server:4200/api
+            - name: PREFECT_SERVER_API_HOST
+              value: 0.0.0.0
+            - name: PREFECT_SERVER__TELEMETRY__ENABLED
+              value: "false"
+          name: prefect-deployments
+          image: prefect-deployments
+          imagePullPolicy: Never
+      restartPolicy: Always
