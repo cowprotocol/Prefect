@@ -31,15 +31,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: ./deployments
-          file: Dockerfile
-          push: true
+          file: ./deployments/Dockerfile
+          push: false
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-
-      - uses: cowprotocol/autodeploy-action@v2
-        if: ${{ github.ref == 'refs/heads/main' }}
-        with:
-          images: ghcr.io/cowprotocol/prefect:main
-          url: ${{ secrets.AUTODEPLOY_URL }}
-          token: ${{ secrets.AUTODEPLOY_TOKEN }}
-          timeout: 600000 # 10 minutes
