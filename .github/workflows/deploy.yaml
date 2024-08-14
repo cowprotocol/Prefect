@@ -35,3 +35,8 @@ jobs:
           push: false
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          secrets: |
+            ${{ secrets.OAUTH2_PROXY_CLIENT_ID }}
+            ${{ secrets.OAUTH2_PROXY_CLIENT_SECRET }}
+            ${{ secrets.OAUTH2_PROXY_COOKIE_SECRET }}
+            ${{ secrets.OAUTH2_PROXY_REDIRECT_URL }}
