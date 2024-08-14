@@ -30,8 +30,8 @@ jobs:
       - name: Push Project Image
         uses: docker/build-push-action@v3
         with:
-          context: deployments
-          file: Dockerfile
+          context: ./deployments
+          file: ./deployments/Dockerfile
           push: false
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
