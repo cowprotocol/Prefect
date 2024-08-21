@@ -32,11 +32,14 @@ jobs:
         with:
           context: ./deployments
           file: ./deployments/Dockerfile
-          push: false
+          push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          secrets: |
-            ${{ secrets.OAUTH2_PROXY_CLIENT_ID }}
-            ${{ secrets.OAUTH2_PROXY_CLIENT_SECRET }}
-            ${{ secrets.OAUTH2_PROXY_COOKIE_SECRET }}
-            ${{ secrets.OAUTH2_PROXY_REDIRECT_URL }}
+
+      - uses: cowprotocol/autodeploy-action@v2
+        if: ${{ github.ref == 'refs/heads/main' }}
+        with:
+          images: ghcr.io/cowprotocol/prefect:main
+          url: ${{ secrets.AUTODEPLOY_URL }}
+          token: ${{ secrets.AUTODEPLOY_TOKEN }}
+          timeout: 600000 # 10 minutes
